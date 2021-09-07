@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Crash Course</title>
+</head>
+<body>
+    
+    <button onclick="showText();">Show Text</button>
+    <button onclick="showApiText();">Show Content</button>
+	<button onclick="showSomething();">Show Something from db</button>
+    <p id="text"></p>
+    <div id="content"></div>
+	<div id="demo">
+	<button type="button" onclick="loadDoc()">Change Content</button>
+	</div>
+
+
+
+    <script>
+
+  function showText(){
+            // Initialize Object
+            let xhr = new XMLHttpRequest();
+            
+            // Set the params and method
+            xhr.open("GET", "dummy.txt", true);
+            // on successful load show data on webpage
+            xhr.onload = function(){
+                if(this.status = 200){
+                    document.getElementById("text").innerHTML = this.responseText;
+                }
+            }
+            // Send the request
+            xhr.send();
+        }
+		
+
+        // Accessing Github REST API
+        function showApiText(){
+            // Initialize Object
+            let xhr = new XMLHttpRequest();
+            
+            // Set the params and method
+            xhr.open("GET", "https://api.github.com/users", true);
+            // on successful load show data on webpage
+            xhr.onload = function(){
+                if(this.status = 200){
+                    let content = "";
+                    let data = JSON.parse(this.responseText);
+                    for(let id in data){
+                        content += 
+                        `<div>
+                            <img src='${data[id].avatar_url}' width="50" height="50">
+                            <h5>Name = ${data[id].login}</h5>
+                        </div>`;
+                    }
+                    document.getElementById("content").innerHTML = content;
+                }
+            }
+            // Send the request
+            xhr.send();
+        }
+        
+    </script>
+
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+</style>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open("GET", "getcustomer.php", true);
+  xhttp.send();
+}
+</script>
+
+</html>
+
+
+</body>
+</html>
